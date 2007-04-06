@@ -47,7 +47,7 @@ The Thousand Parsec protocol is the truely defining work of Thousand Parsec. It 
 \label{chap:tpserver-cpp-intro}
 tpserver-cpp is the software written in C++ for Thousand Parsec which implements a Thousand Parsec protocol Server. It was mostly designed and written by Lee Begg (llnz). In it's early days, Lee used it as the project for his Honours Level (4th year university) Software Engineering project.
 
-It supports only one game at a time. It uses plugins (dynamically loaded libraries) to implement tpscheme (tpcl), persistence methods, and ruleset.
+It supports only one game at a time. It uses plugins (dynamically loaded libraries) to implement tpscheme (tpcl), persistence methods, and rulesets. It is currenly single threaded, although that is very likely to change.
 
 \chapter{Tools Used}
 \label{chap:tools}
@@ -66,6 +66,8 @@ Two downsides of darcs are present: it doesn't handle binaries well, and it's qu
 
 The collection of aclocal, autoheader, autoconf, and automake make up ``autotools''. They are mostly used with C and C++ based projects, providing a slightly nicer way of configuring the build environment and build system than by scratch (in for example, sh/m4 and Makefile).
 
+A replacement for autotools is not out of the question because of the complexity of using autotools and some platforms are not well supported.
+
 \subsection{Libtool}
 \label{sec:libtool}
 
@@ -80,21 +82,73 @@ Because libtool was so wonderful in creating loadable libraries on many platform
 \chapter{Building tpserver-cpp}
 \label{chap:building-tpserver-cpp}
 
+README, INSTALL, man page.
+
+tpserver-cpp uses libtprl for the console in the server. Only libtprl is required to build tpserver-cpp, all other packages mentioned are optional.
+
 \section{Building from Release}
 \label{sec:release-build}
 
+\begin{verbatim}
+ >$ tar xzf tpserver-cpp-<version>.tar.gz
+ >$ cd tpserver-cpp-<version>
+ >$ ./configure
+ >$ make
+ ># make install
+\end{verbatim}
+
+The configure script takes a number of options and settings. Running \texttt{./configure} with the  \texttt{--help} option prints out information about the various options. Some of the important options are highlighted in README.
 
 \section{Building from Darcs}
 \label{sec:build-darcs}
 
+Building from darcs is nearly the same.  To start with you will need to get the tree.
+
+\begin{verbatim}
+ >$ darcs get --partial <url>
+ >$ cd tpserver-cpp
+ >$ chmod u+x autogen.sh
+\end{verbatim}
+
+Then the first time, and any time a \texttt{.in}, \texttt{.ac} or \texttt{.am} file changes, you need to run \texttt{autogen.sh} to generate the configure script, and create the build system.
+
+\begin{verbatim}
+ >$ ./autogen.sh
+\end{verbatim}
+
+Then build the same way as from the tarball.
+
+\begin{verbatim}
+ >$ ./configure
+ >$ make
+ ># make install
+\end{verbatim}
 
 \chapter{Configuring tpserver-cpp}
 \label{chap:configure}
 
+Once tpserver-cpp is built and installed, you can run tpserver-cpp.  You won't see much though as the default configuration is very basic.
+
+The settings for the server can be specified on the command line, read from file, or entered on the console. The settings are recorded in that order, so the file overwrites the command line for example.
+
+All the settings are defined and described in the sample.conf files. Some modules have the own sample.conf files as well.
 
 \chapter{Basic Design}
 \label{chap:design-basic}
 
+The tpserver-cpp source tree is divided into two parts. The first part, ``tpserver'' is the core of the server and implements all the common parts of the server. The second part is the ``modules'' tree.
+
+Also in the root directory is a copy of libltdl because some distributions (namely debian and ubuntu) ship broken versions.
+
+\section{\texttt{tpserver} tree}
+\label{sec:tree-tpserver}
+
+This tree contains the bulk of the server.
+
+\section{\texttt{modules} tree}
+\label{sec:tree-modules}
+
+The modules tree contains the modules the server ships with. They are divided by the type of module they are, namely ``game'' for rulesets, ``persistence'' for persistence methods, and ``tpscheme'' for scheme implementations.
 
 \part{Ruleset Development}
 \label{part:ruleset-dev}
@@ -102,21 +156,60 @@ Because libtool was so wonderful in creating loadable libraries on many platform
 \chapter{The Ruleset Concept}
 \label{chap:ruleset-concept}
 
+In tpserver-cpp, rulesets define how the game behaves.  All the properties and rules which define the game are in the ruleset.
 
-\chapter{Ruleset parts in tpserver-cpp}
-\label{chap:ruleset-parts}
-
-\section{Ruleset Class}
-\label{sec:ruleset-class}
-
-\section{Turn Process Class}
-\label{sec:turn-process}
-
+The core server implements all the things that are common between rulesets. This includes how to talk to clients, how to cache the data between clients and persistence, and what the various data types look like.
 
 \chapter{Where to Begin}
 \label{chap:begin}
 
-A ruleset normally starts simply with an idea.
+A ruleset normally starts simply with an idea. This could be wanting to implement an existing game in any format, or it could be a concept for an all new game.
+
+The next step is to plan out as much of the game as possible. Gathering or creating as much information as possible about what is in the game helps later on. Information includes: what object types, what orders can be given to those objects, what order things a processed at the end of turn, what types of designs can be made, what components those designs are made of, and what properties are needed for those designs and components.  Also needed is how combat will be resolved if the game includes it.
+
+
+The thrid step is to code, and the fourth is test, followed by more coding and testing.
+
+
+\chapter{Ruleset parts in tpserver-cpp}
+\label{chap:ruleset-parts}
+
+The development of a ruleset can be broken down into parts. Some of the parts are related to a single class, where others touch on many classes.
+
+\section{Ruleset Class}
+\label{sec:ruleset-class}
+
+The Ruleset class is the ``public face'' of the ruleset. It handles a few tasks relating to the initialisation, creating and running the game, and players.
+
+Two functions, \texttt{getName()} and \texttt{getVersion()} are used to provide the name and version of the ruleset, and is used to publish the ruleset name to the metaserver and to DNS-SD on the local network.
+
+The \texttt{initGame()} method sets the server up ready for the game to be created or resumed from persistence.
+
+The \texttt{createGame()} creates everything to start the game with. This includes creating the universe, initialising all the components and properties, and anything else that only has to be done once so the game can be played.
+
+The method \texttt{startGame()} is called when the game is made active and in progress, including everytime the server is started with the game already created and in persistence.
+
+Two functions handle the creation of player for the ruleset.  The function \texttt{onPlayerAdd()} allows the ruleset to decide if the player is allowed to be added. Most of the time they will be allowed, but if there is limited number of players then the ruleset can say no to creating the new player. The method \texttt{onPlayerAdded()} allows the ruleset to do things---such as give the player a home planet---now that the player has been added to the game.
+
+\section{Turn Process Class}
+\label{sec:turn-process}
+
+The TurnProcess class is used to perform the tasks required to end the turn. As such, the virtual method called is \texttt{doTurn()}.  Other methods might be provided to subclasses in future to simplify and optimise the turn processing.
+
+\section{Object Types}
+\label{sec:object-types}
+
+The object types define the properties of objects that appear in the universe.
+
+\section{Order Types}
+\label{sec:order-types}
+
+Order types define what actions objects can take.
+
+In the End of Turn process, the method \texttt{doOrder()} is called, where the actual work is done.
+
+\section{Categories, Designs, Components and Properties}
+\label{sec:designs-components-properties}
 
 
 
