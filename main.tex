@@ -1,0 +1,123 @@
+\documentclass[a4paper,11pt]{report}
+
+
+% Title Page
+\title{Ruleset Development with tpserver-cpp}
+\author{Lee Begg}
+
+
+\begin{document}
+\maketitle
+
+\tableofcontents
+
+\begin{abstract}
+The document outlines the process for developing rulesets for tpserver-cpp. Since the Thousand Parsec project overall and tpserver-cpp in particular are developing fast, this is a living document, changing as the tpserver-cpp environment changes.
+
+Developing a ruleset is not a trival process, so this document is designed to guide you through the steps
+you need to do and highlight issues and probable sticking points. Hopefully it make ruleset development easy enough that several parallel ruleset developments can take place.
+\end{abstract}
+
+\part{The Big Picture}
+\label{part:intro}
+
+\chapter{Thousand Parsec}
+\label{chap:tp}
+Started in 2003 by mithro (Tim Annsel) and llnz (Lee Begg), at mithro's instigation, the project was aiming to become a framework for building online turn base space strategy games.
+
+
+The framework can be divided into four areas.
+\begin{itemize}
+ \item Protocol
+ \item Servers
+ \item Clients
+ \item Media
+\end{itemize}
+
+The protocol is descibed fully in chapter \ref{chap:protocol-intro}. Servers provide games using the TP protocol, and can do it in different ways. They can provide multiple games at once, and can host different games. Clients provide the user's view of the game. A client can connect to any server, and users should be able to use multiple different clients to connect to any game. The media collected by the project can be used by any game.
+
+The whole framework is under development.
+
+\chapter{Protocol}
+\label{chap:protocol-intro}
+
+The Thousand Parsec protocol is the truely defining work of Thousand Parsec. It sets the common understanding between servers and clients. If a game can work within the restrictions of the protocol then the whole Thousand Parsec framework can be used.
+
+\chapter{Introduction to tpserver-cpp}
+\label{chap:tpserver-cpp-intro}
+tpserver-cpp is the software written in C++ for Thousand Parsec which implements a Thousand Parsec protocol Server. It was mostly designed and written by Lee Begg (llnz). In it's early days, Lee used it as the project for his Honours Level (4th year university) Software Engineering project.
+
+It supports only one game at a time. It uses plugins (dynamically loaded libraries) to implement tpscheme (tpcl), persistence methods, and ruleset.
+
+\chapter{Tools Used}
+\label{chap:tools}
+
+Thousand Parsec use a number of tools in creating it's framework.
+
+\section{Darcs}
+\label{sec:darcs}
+
+Darcs is a distributed source revision control system. This allow many people to work simulatiously, even disconnected from the internet. Changes are recorded in patchsets, and are sent and push around.
+
+Two downsides of darcs are present: it doesn't handle binaries well, and it's quite resource intensive. The first point often leads to the second.
+
+\section{Autotools}
+\label{sec:autotools}
+
+The collection of aclocal, autoheader, autoconf, and automake make up ``autotools''. They are mostly used with C and C++ based projects, providing a slightly nicer way of configuring the build environment and build system than by scratch (in for example, sh/m4 and Makefile).
+
+\subsection{Libtool}
+\label{sec:libtool}
+
+Libtool is also consided part of autotools. It provides a generic way to create libraries and dynamic module loading programs.
+
+Because libtool was so wonderful in creating loadable libraries on many platforms and the lack of a common way to load said libraries, libtool has a companion library called libltdl---the libtool Dynamic Loader.  It has an interface similar to \texttt{dlopen()} that works on all the systems libtool does. This includes systems that don't actually dynamically load, so libtool and libltdl have hacks to allow what looks like dynamic loading, but isn't.
+
+
+\part{Starting out}
+\label{part:starting}
+
+\chapter{Building tpserver-cpp}
+\label{chap:building-tpserver-cpp}
+
+\section{Building from Release}
+\label{sec:release-build}
+
+
+\section{Building from Darcs}
+\label{sec:build-darcs}
+
+
+\chapter{Configuring tpserver-cpp}
+\label{chap:configure}
+
+
+\chapter{Basic Design}
+\label{chap:design-basic}
+
+
+\part{Ruleset Development}
+\label{part:ruleset-dev}
+
+\chapter{The Ruleset Concept}
+\label{chap:ruleset-concept}
+
+
+\chapter{Ruleset parts in tpserver-cpp}
+\label{chap:ruleset-parts}
+
+\section{Ruleset Class}
+\label{sec:ruleset-class}
+
+\section{Turn Process Class}
+\label{sec:turn-process}
+
+
+\chapter{Where to Begin}
+\label{chap:begin}
+
+A ruleset normally starts simply with an idea.
+
+
+
+\end{document}
