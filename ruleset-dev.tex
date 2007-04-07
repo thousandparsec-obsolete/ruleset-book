@@ -14,7 +14,7 @@
 \begin{abstract}
 The document outlines the process for developing rulesets for tpserver-cpp. Since the Thousand Parsec project overall and tpserver-cpp in particular are developing fast, this is a living document, changing as the tpserver-cpp environment changes.
 
-Developing a ruleset is not a trival process, so this document is designed to guide you through the steps
+Developing a ruleset is not a trivial process, so this document is designed to guide you through the steps
 you need to do and highlight issues and probable sticking points. Hopefully it make ruleset development easy enough that several parallel ruleset developments can take place.
 \end{abstract}
 
@@ -23,7 +23,7 @@ you need to do and highlight issues and probable sticking points. Hopefully it m
 
 \chapter{Thousand Parsec}
 \label{chap:tp}
-Started in 2003 by mithro (Tim Annsel) and llnz (Lee Begg), at mithro's instigation, the project was aiming to become a framework for building online turn base space strategy games.
+Started in 2003 by mithro (Tim Ansell) and llnz (Lee Begg), at mithro's instigation, the project was aiming to become a framework for building online turn base space strategy games.
 
 
 The framework can be divided into four areas.
@@ -34,20 +34,20 @@ The framework can be divided into four areas.
  \item Media
 \end{itemize}
 
-The protocol is descibed fully in chapter \ref{chap:protocol-intro}. Servers provide games using the TP protocol, and can do it in different ways. They can provide multiple games at once, and can host different games. Clients provide the user's view of the game. A client can connect to any server, and users should be able to use multiple different clients to connect to any game. The media collected by the project can be used by any game.
+The protocol is described fully in chapter \ref{chap:protocol-intro}. Servers provide games using the TP protocol, and can do it in different ways. They can provide multiple games at once, and can host different games. Clients provide the user's view of the game. A client can connect to any server, and users should be able to use multiple different clients to connect to any game. The media collected by the project can be used by any game.
 
 The whole framework is under development.
 
 \chapter{Protocol}
 \label{chap:protocol-intro}
 
-The Thousand Parsec protocol is the truely defining work of Thousand Parsec. It sets the common understanding between servers and clients. If a game can work within the restrictions of the protocol then the whole Thousand Parsec framework can be used.
+The Thousand Parsec protocol is the truly defining work of Thousand Parsec. It sets the common understanding between servers and clients. If a game can work within the restrictions of the protocol then the whole Thousand Parsec framework can be used.
 
 \chapter{Introduction to tpserver-cpp}
 \label{chap:tpserver-cpp-intro}
 tpserver-cpp is the software written in C++ for Thousand Parsec which implements a Thousand Parsec protocol Server. It was mostly designed and written by Lee Begg (llnz). In it's early days, Lee used it as the project for his Honours Level (4th year university) Software Engineering project.
 
-It supports only one game at a time. It uses plugins (dynamically loaded libraries) to implement tpscheme (tpcl), persistence methods, and rulesets. It is currenly single threaded, although that is very likely to change.
+It supports only one game at a time. It uses plugins (dynamically loaded libraries) to implement tpscheme (tpcl), persistence methods, and rulesets. It is currently single threaded, although that is very likely to change.
 
 \chapter{Tools Used}
 \label{chap:tools}
@@ -57,7 +57,7 @@ Thousand Parsec use a number of tools in creating it's framework.
 \section{Darcs}
 \label{sec:darcs}
 
-Darcs is a distributed source revision control system. This allow many people to work simulatiously, even disconnected from the internet. Changes are recorded in patchsets, and are sent and push around.
+Darcs is a distributed source revision control system. This allow many people to work simultaneously, even disconnected from the internet. Changes are recorded in patchsets, and are sent and push around.
 
 Two downsides of darcs are present: it doesn't handle binaries well, and it's quite resource intensive. The first point often leads to the second.
 
@@ -169,7 +169,7 @@ The next step is to plan out as much of the game as possible. Gathering or creat
 Another important element of any idea is the name that the ruleset will be called.
 
 
-The thrid step is to code, and the fourth is test, followed by more coding and testing.
+The third step is to code, and the fourth is test, followed by more coding and testing.
 
 
 \chapter{Ruleset parts in tpserver-cpp}
