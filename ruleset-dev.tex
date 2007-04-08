@@ -23,7 +23,7 @@ you need to do and highlight issues and probable sticking points. Hopefully it m
 
 \chapter{Thousand Parsec}
 \label{chap:tp}
-Started in 2003 by mithro (Tim Ansell) and llnz (Lee Begg), at mithro's instigation, the project was aiming to become a framework for building online turn base space strategy games.
+Started in 2003 by mithro (Tim Ansell) and llnz (Lee Begg), at mithro's instigation, the project was aiming to become a framework for building online turn base space strategy games. Thousand Parsec was originally conceived as a ``Stars!'' clone, but taking inspiration from the WorldForge project---building a framework for creating massively multiplayer online role playing games---that both mithro and llnz worked on, it was decided to go for the much more general goal.
 
 
 The framework can be divided into four areas.
@@ -105,7 +105,7 @@ The configure script takes a number of options and settings. Running \texttt{./c
 Building from darcs is nearly the same.  To start with you will need to get the tree.
 
 \begin{verbatim}
- >$ darcs get --partial <url>
+ >$ darcs get --partial http://darcs.thousandparsec.net/repos/tpserver-cpp
  >$ cd tpserver-cpp
  >$ chmod u+x autogen.sh
 \end{verbatim}
@@ -160,16 +160,6 @@ In tpserver-cpp, rulesets define how the game behaves.  All the properties and r
 
 The core server implements all the things that are common between rulesets. This includes how to talk to clients, how to cache the data between clients and persistence, and what the various data types look like.
 
-\chapter{Where to Begin}
-\label{chap:begin}
-
-A ruleset normally starts simply with an idea. This could be wanting to implement an existing game in any format, or it could be a concept for an all new game.
-
-The next step is to plan out as much of the game as possible. Gathering or creating as much information as possible about what is in the game helps later on. Information includes: what object types, what orders can be given to those objects, what order things a processed at the end of turn, what types of designs can be made, what components those designs are made of, and what properties are needed for those designs and components.  Also needed is how combat will be resolved if the game includes it.
-Another important element of any idea is the name that the ruleset will be called.
-
-
-The third step is to code, and the fourth is test, followed by more coding and testing.
 
 
 \chapter{Ruleset parts in tpserver-cpp}
@@ -212,6 +202,16 @@ In the End of Turn process, the method \texttt{doOrder()} is called, where the a
 \section{Categories, Designs, Components and Properties}
 \label{sec:designs-components-properties}
 
+\chapter{Where to Begin}
+\label{chap:begin}
+
+A ruleset normally starts simply with an idea. This could be wanting to implement an existing game in any format, or it could be a concept for an all new game.
+
+The next step is to plan out as much of the game as possible. Gathering or creating as much information as possible about what is in the game helps later on. Information includes: what object types, what orders can be given to those objects, what order things a processed at the end of turn, what types of designs can be made, what components those designs are made of, and what properties are needed for those designs and components.  Also needed is how combat will be resolved if the game includes it.
+Another important element of any idea is the name that the ruleset will be called.
+
+
+The third step is to code, and the fourth is test, followed by more coding and testing.
 
 
 \chapter{Setting up the Build System}
