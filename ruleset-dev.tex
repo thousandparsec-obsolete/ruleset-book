@@ -54,12 +54,19 @@ It supports only one game at a time. It uses plugins (dynamically loaded librari
 
 Thousand Parsec use a number of tools in creating it's framework.
 
-\section{Darcs}
-\label{sec:darcs}
+% \section{Darcs}
+% \label{sec:darcs}
+% 
+% Darcs is a distributed source revision control system. This allow many people to work simultaneously, even disconnected from the internet. Changes are recorded in patchsets, and are sent and push around.
+% 
+% Two downsides of darcs are present: it doesn't handle binaries well, and it's quite resource intensive. The first point often leads to the second.
 
-Darcs is a distributed source revision control system. This allow many people to work simultaneously, even disconnected from the internet. Changes are recorded in patchsets, and are sent and push around.
+\section{Git/Cogito}
+\label{sec:git}
 
-Two downsides of darcs are present: it doesn't handle binaries well, and it's quite resource intensive. The first point often leads to the second.
+Git is a distributed source revision control system. This allow many people to work simultaneously, even disconnected from the internet. Changes are recorded in snapshots, and are sent and push around. As it is used by the Linux Kernel, it is developing and well supported.
+
+A slighly nicer interface to git is Cogito, with commands starting with \texttt{cg\_}.
 
 \section{Autotools}
 \label{sec:autotools}
@@ -99,15 +106,14 @@ tpserver-cpp uses libtprl for the console in the server. Only libtprl is require
 
 The configure script takes a number of options and settings. Running \texttt{./configure} with the  \texttt{--help} option prints out information about the various options. Some of the important options are highlighted in README.
 
-\section{Building from Darcs}
-\label{sec:build-darcs}
+\section{Building from Git}
+\label{sec:build-git}
 
-Building from darcs is nearly the same.  To start with you will need to get the tree.
+Building from git is nearly the same.  To start with you will need to get the tree.
 
 \begin{verbatim}
- >$ darcs get --partial http://darcs.thousandparsec.net/repos/tpserver-cpp
+ >$ cg-clone http://git.thousandparsec.net/repos/tpserver-cpp.git
  >$ cd tpserver-cpp
- >$ chmod u+x autogen.sh
 \end{verbatim}
 
 Then the first time, and any time a \texttt{.in}, \texttt{.ac} or \texttt{.am} file changes, you need to run \texttt{autogen.sh} to generate the configure script, and create the build system.
