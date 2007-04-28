@@ -49,6 +49,8 @@ tpserver-cpp is the software written in C++ for Thousand Parsec which implements
 
 It supports only one game at a time. It uses plugins (dynamically loaded libraries) to implement tpscheme (tpcl), persistence methods, and rulesets. It is currently single threaded, although that is very likely to change.
 
+tpserver-cpp has a nice console terminal, using libtprl. Underneath, libtprl is a wrapper around Readline, so all readline editing features, and history, are available.
+
 \chapter{Tools Used}
 \label{chap:tools}
 
@@ -86,36 +88,39 @@ README, INSTALL, man page.
 
 tpserver-cpp uses libtprl for the console in the server. Only libtprl is required to build tpserver-cpp, all other packages mentioned are optional.
 
-\section{Building from Release}
-\label{sec:release-build}
+
+To build tpserver-cpp, first you will need libtprl installed. If you distribution has a high enough version of the library, you should install that. Otherwise you will need to build from source.
+
+% describe building libtprl here
+
+
+With libtprl installed, we can now build tpserver-cpp itself. The first set is to get the source for the server, either from a release, or from the bleeding edge git repository.
+
+If you choose to start with a released version of tpserver-cpp, download the tarball (tar.gz files), and then you can run the following commands:
 
 \begin{verbatim}
  >$ tar xzf tpserver-cpp-<version>.tar.gz
  >$ cd tpserver-cpp-<version>
- >$ ./configure
- >$ make
- ># make install
 \end{verbatim}
 
-The configure script takes a number of options and settings. Running \texttt{./configure} with the  \texttt{--help} option prints out information about the various options. Some of the important options are highlighted in README.
-
-\section{Building from Git}
-\label{sec:build-git}
-
-Building from git is nearly the same.  To start with you will need to get the tree.
+If you chose to build the current bleeding edge from git, you need to clone the repository and set up the build environment.
 
 \begin{verbatim}
- >$ cg-clone http://git.thousandparsec.net/repos/tpserver-cpp.git
+ >$ cg-clone git://git.thousandparsec.net/git/tpserver-cpp.git
  >$ cd tpserver-cpp
 \end{verbatim}
 
+This downloads the source from the git repo.
 Then the first time, and any time a \texttt{.in}, \texttt{.ac} or \texttt{.am} file changes, you need to run \texttt{autogen.sh} to generate the configure script, and create the build system.
 
 \begin{verbatim}
  >$ ./autogen.sh
 \end{verbatim}
 
-Then build the same way as from the tarball.
+Now both the released tarball and the bleeding edge from git are ready to be configured and built.
+
+The configure script takes a number of options and settings. Running \texttt{./configure} with the  \texttt{--help} option prints out information about the various options. Some of the important options are highlighted in README. Some environmental variables are also recorded by configure, among these is \texttt{PKG\_CONFIG\_PATH} which can be used to help the \texttt{configure} script find libtprl. For example, if you prefix for libtprl is \texttt{/opt/tp/}, the you should run \texttt{PKG\_CONFIG\_PATH=/opt/tp/lib/pkg\_config ./configure}.
+
 
 \begin{verbatim}
  >$ ./configure
