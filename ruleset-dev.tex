@@ -221,10 +221,62 @@ The third step is to code, and the fourth is test, followed by more coding and t
 \chapter{Setting up the Build System}
 \label{chap:build-system}
 
+The build system is the process used to create the ruleset module from the source code. The method used varies if you build your module in the tpserver-cpp source tree, or you build it in its own separate source tree.
+
+
 
 \section{In Tree Modules}
 \label{sec:intree-module-build}
 
+In tree modules, such as the provided Minisec and MTSec rulesets, use the tpserver-cpp build system. This system is build on Autoconf and Automake.  The first step is to make a directory in the modules/games/ directory to hold the source code for the module. 
+
+\begin{verbatim}
+ >$ cd modules/games
+ >$ mkdir mygame
+\end{verbatim}
+
+Next, you need to create a Makefile.am file in the new directory. It's contents should be something like:
+
+\begin{verbatim}
+rulesetlib_LTLIBRARIES = libmygame.la
+
+rulesetlibdir = $(libdir)/tpserver/ruleset
+
+libmygame_la_SOURCES = mygame.cpp
+
+libmygame_la_LDFLAGS = -module
+
+noinst_HEADERS = mygame.h
+\end{verbatim}
+
+As you add more source files, you add the \.cpp files to SOURCES, and the header files to noinst\_HEADERS. You can break long lines onto multiple lines by putting a backslash (\verb|\|) at the end of the line and continuing on the next line. Note that the SOURCES and LDFLAGS variables start with the name of the library with underscore instead of the fullstop.
+
+Lastly, we need the build system to actually process the new directory with it's Makefile.am file. Two files need to be change. The first is to add the new directory to the SUBDIRS of modules/games/Makefile.am, such as:
+
+\begin{verbatim}
+SUBDIRS = mtsec minisec mygame
+\end{verbatim}
+
+The second file that needs changing is configure.ac. This file needs to know about the Makefile.am file to make it into first Makefile.in and then a normal Makefile. We add a line about our new Makefile.am in the AC\_CONFIG\_FILES section that is right at the end of configure.ac file:
+
+\begin{verbatim}
+AC_CONFIG_FILES([
+Makefile
+tpserver/Makefile
+modules/Makefile
+modules/games/Makefile
+modules/games/minisec/Makefile
+modules/games/mtsec/Makefile
+modules/persistence/Makefile
+modules/persistence/mysql/Makefile
+modules/tpcl/Makefile
+modules/tpcl/guile/Makefile
+modules/tpcl/mzscheme/Makefile
+modules/games/mygame/Makefile
+]) 
+\end{verbatim}
+
+Now the build system is ready for the code for the ruleset to be written. You will need to run ./autogen.sh and ./configure each time you edit your Makefile.am, so it would be a good idea to do that now. Note that because it specifies mygame.cpp as a source file and we haven't created it yet, the build system will not make the ruleset module.
 
 \section{Out of Tree Modules}
 \label{sec:outoftree-module-build}
