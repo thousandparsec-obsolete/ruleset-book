@@ -6,7 +6,19 @@
 \author{Lee Begg}
 
 
+%useful commands
+
+%\filename{name}
+\newcommand{\filename}[1]{\emph{#1}}
+
+%\codename{variable} \codename{methodName()} \codename{DEF_NAME}
+\newcommand{\codename}[1]{\texttt{#1}}
+
+
 \begin{document}
+
+%Start the doc
+
 \maketitle
 
 \tableofcontents
@@ -61,7 +73,7 @@ Thousand Parsec use a number of tools in creating it's framework. Some of those 
 
 Git is a distributed source revision control system. This allow many people to work simultaneously, even disconnected from the internet. Changes are recorded in snapshots, and are sent and push around. As it is used by the Linux Kernel, it is developing and well supported.
 
-A slighly nicer interface to git is Cogito, with commands starting with ``\texttt{cg-}''.
+A slightly nicer interface to git is Cogito, with commands starting with ``\filename{cg-}''.
 
 \section{Autotools}
 \label{sec:autotools}
@@ -75,7 +87,7 @@ A replacement for autotools is not out of the question because of the complexity
 
 Libtool is also consided part of autotools. It provides a generic way to create libraries and dynamic module loading programs.
 
-Because libtool was so wonderful in creating loadable libraries on many platforms and the lack of a common way to load said libraries, libtool has a companion library called libltdl---the libtool Dynamic Loader.  It has an interface similar to \texttt{dlopen()} that works on all the systems libtool does. This includes systems that don't actually dynamically load, so libtool and libltdl have hacks to allow what looks like dynamic loading, but isn't.
+Because libtool was so wonderful in creating loadable libraries on many platforms and the lack of a common way to load said libraries, libtool has a companion library called libltdl---the libtool Dynamic Loader.  It has an interface similar to \codename{dlopen()} that works on all the systems libtool does. This includes systems that don't actually dynamically load, so libtool and libltdl have hacks to allow what looks like dynamic loading, but isn't.
 
 
 \part{Starting out}
@@ -96,7 +108,7 @@ To build tpserver-cpp, first you will need libtprl installed. If you distributio
 
 With libtprl installed, we can now build tpserver-cpp itself. The first set is to get the source for the server, either from a release, or from the bleeding edge git repository.
 
-If you choose to start with a released version of tpserver-cpp, download the tarball (tar.gz files), and then you can run the following commands:
+If you choose to start with a released version of tpserver-cpp, download the tarball (\filename{tar.gz} files), and then you can run the following commands:
 
 \begin{verbatim}
  >$ tar xzf tpserver-cpp-<version>.tar.gz
@@ -111,7 +123,7 @@ If you chose to build the current bleeding edge from git, you need to clone the 
 \end{verbatim}
 
 This downloads the source from the git repo.
-Then the first time, and any time a \texttt{.in}, \texttt{.ac} or \texttt{.am} file changes, you need to run \texttt{autogen.sh} to generate the configure script, and create the build system.
+Then the first time, and any time a \filename{.in}, \filename{.ac} or \filename{.am} file changes, you need to run \filename{autogen.sh} to generate the configure script, and create the build system.
 
 \begin{verbatim}
  >$ ./autogen.sh
@@ -119,7 +131,7 @@ Then the first time, and any time a \texttt{.in}, \texttt{.ac} or \texttt{.am} f
 
 Now both the released tarball and the bleeding edge from git are ready to be configured and built.
 
-The configure script takes a number of options and settings. Running \texttt{./configure} with the  \texttt{--help} option prints out information about the various options. Some of the important options are highlighted in README. Some environmental variables are also recorded by configure, among these is \texttt{PKG\_CONFIG\_PATH} which can be used to help the \texttt{configure} script find libtprl. For example, if you prefix for libtprl is \texttt{/opt/tp/}, the you should run \texttt{PKG\_CONFIG\_PATH=/opt/tp/lib/pkg\_config ./configure}.
+The configure script takes a number of options and settings. Running \codename{./configure} with the  \codename{--help} option prints out information about the various options. Some of the important options are highlighted in \filename{README}. Some environmental variables are also recorded by configure, among these is \codename{PKG\_CONFIG\_PATH} which can be used to help the \filename{configure} script find libtprl. For example, if you prefix for libtprl is \filename{/opt/tp/}, the you should run \codename{PKG\_CONFIG\_PATH=/opt/tp/lib/pkg\_config ./configure}.
 
 
 \begin{verbatim}
@@ -135,24 +147,24 @@ Once tpserver-cpp is built and installed, you can run tpserver-cpp.  You won't s
 
 The settings for the server can be specified on the command line, read from file, or entered on the console. The settings are recorded in that order, so the file overwrites the command line for example.
 
-All the settings are defined and described in the sample.conf files. Some modules have the own sample.conf files as well.
+All the settings are defined and described in the \filename{sample.conf} files. Some modules have the own \filename{sample.conf} files as well.
 
 \chapter{Basic Design}
 \label{chap:design-basic}
 
-The tpserver-cpp source tree is divided into two parts. The first part, ``tpserver'' is the core of the server and implements all the common parts of the server. The second part is the ``modules'' tree.
+The tpserver-cpp source tree is divided into two parts. The first part, ``\filename{tpserver}'' is the core of the server and implements all the common parts of the server. The second part is the ``\filename{modules}'' tree.
 
 Also in the root directory is a copy of libltdl because some distributions (namely debian and ubuntu) ship broken versions.
 
-\section{\texttt{tpserver} tree}
+\section{\filename{tpserver} tree}
 \label{sec:tree-tpserver}
 
 This tree contains the bulk of the server.
 
-\section{\texttt{modules} tree}
+\section{\filename{modules} tree}
 \label{sec:tree-modules}
 
-The modules tree contains the modules the server ships with. They are divided by the type of module they are, namely ``game'' for rulesets, ``persistence'' for persistence methods, and ``tpscheme'' for scheme implementations.
+The \filename{modules} tree contains the modules the server ships with. They are divided by the type of module they are, namely ``\filename{game}'' for rulesets, ``\filename{persistence}'' for persistence methods, and ``\filename{tpscheme}'' for scheme implementations.
 
 \part{Ruleset Development}
 \label{part:ruleset-dev}
@@ -171,25 +183,25 @@ The core server implements all the things that are common between rulesets. This
 
 The development of a ruleset can be broken down into parts. Some of the parts are related to a single class, where others touch on many classes.
 
-\section{Ruleset Class}
+\section{\codename{Ruleset} Class}
 \label{sec:ruleset-class}
 
-The Ruleset class is the ``public face'' of the ruleset. It handles a few tasks relating to the initialisation, creating and running the game, and players.
+The \codename{Ruleset} class is the ``public face'' of the ruleset. It handles a few tasks relating to the initialisation, creating and running the game, and players.
 
-Two functions, \texttt{getName()} and \texttt{getVersion()} are used to provide the name and version of the ruleset, and is used to publish the ruleset name to the metaserver and to DNS-SD on the local network.
+Two functions, \codename{getName()} and \codename{getVersion()} are used to provide the name and version of the ruleset, and is used to publish the ruleset name to the metaserver and to DNS-SD on the local network.
 
-The \texttt{initGame()} method sets the server up ready for the game to be created or resumed from persistence.
+The \codename{initGame()} method sets the server up ready for the game to be created or resumed from persistence.
 
-The \texttt{createGame()} creates everything to start the game with. This includes creating the universe, initialising all the components and properties, and anything else that only has to be done once so the game can be played.
+The \codename{createGame()} creates everything to start the game with. This includes creating the universe, initialising all the components and properties, and anything else that only has to be done once so the game can be played.
 
-The method \texttt{startGame()} is called when the game is made active and in progress, including everytime the server is started with the game already created and in persistence.
+The method \codename{startGame()} is called when the game is made active and in progress, including everytime the server is started with the game already created and in persistence.
 
-Two functions handle the creation of player for the ruleset.  The function \texttt{onPlayerAdd()} allows the ruleset to decide if the player is allowed to be added. Most of the time they will be allowed, but if there is limited number of players then the ruleset can say no to creating the new player. The method \texttt{onPlayerAdded()} allows the ruleset to do things---such as give the player a home planet---now that the player has been added to the game.
+Two functions handle the creation of player for the ruleset.  The function \codename{onPlayerAdd()} allows the ruleset to decide if the player is allowed to be added. Most of the time they will be allowed, but if there is limited number of players then the ruleset can say no to creating the new player. The method \codename{onPlayerAdded()} allows the ruleset to do things---such as give the player a home planet---now that the player has been added to the game.
 
-\section{Turn Process Class}
+\section{\codename{TurnProcess} Class}
 \label{sec:turn-process}
 
-The TurnProcess class is used to perform the tasks required to end the turn. As such, the virtual method called is \texttt{doTurn()}.  Other methods might be provided to subclasses in future to simplify and optimise the turn processing.
+The \codename{TurnProcess} class is used to perform the tasks required to end the turn. As such, the virtual method called is \codename{doTurn()}.  Other methods might be provided to subclasses in future to simplify and optimise the turn processing.
 
 \section{Object Types}
 \label{sec:object-types}
@@ -201,7 +213,7 @@ The object types define the properties of objects that appear in the universe.
 
 Order types define what actions objects can take.
 
-In the End of Turn process, the method \texttt{doOrder()} is called, where the actual work is done.
+In the End of Turn process, the method \codename{doOrder()} is called, where the actual work is done.
 
 \section{Categories, Designs, Components and Properties}
 \label{sec:designs-components-properties}
@@ -228,14 +240,14 @@ The build system is the process used to create the ruleset module from the sourc
 \section{In Tree Modules}
 \label{sec:intree-module-build}
 
-In tree modules, such as the provided Minisec and MTSec rulesets, use the tpserver-cpp build system. This system is build on Autoconf and Automake.  The first step is to make a directory in the modules/games/ directory to hold the source code for the module. 
+In tree modules, such as the provided Minisec and MTSec rulesets, use the tpserver-cpp build system. This system is build on Autoconf and Automake.  The first step is to make a directory in the \filename{modules/games/} directory to hold the source code for the module. 
 
 \begin{verbatim}
  >$ cd modules/games
  >$ mkdir mygame
 \end{verbatim}
 
-Next, you need to create a Makefile.am file in the new directory. It's contents should be something like:
+Next, you need to create a \filename{Makefile.am} file in the new directory. It's contents should be something like:
 
 \begin{verbatim}
 rulesetlib_LTLIBRARIES = libmygame.la
@@ -249,15 +261,15 @@ libmygame_la_LDFLAGS = -module
 noinst_HEADERS = mygame.h
 \end{verbatim}
 
-As you add more source files, you add the \.cpp files to SOURCES, and the header files to noinst\_HEADERS. You can break long lines onto multiple lines by putting a backslash (\verb|\|) at the end of the line and continuing on the next line. Note that the SOURCES and LDFLAGS variables start with the name of the library with underscore instead of the fullstop.
+As you add more source files, you add the \filename{\.cpp} files to \codename{SOURCES}, and the header files to \codename{noinst\_HEADERS}. You can break long lines onto multiple lines by putting a backslash (\verb|\|) at the end of the line and continuing on the next line. Note that the \codename{SOURCES} and \codename{LDFLAGS} variables start with the name of the library with underscore instead of the fullstop.
 
-Lastly, we need the build system to actually process the new directory with it's Makefile.am file. Two files need to be change. The first is to add the new directory to the SUBDIRS of modules/games/Makefile.am, such as:
+Lastly, we need the build system to actually process the new directory with it's \filename{Makefile.am} file. Two files need to be change. The first is to add the new directory to the \codename{SUBDIRS} of \filename{modules/games/Makefile.am}, such as:
 
 \begin{verbatim}
 SUBDIRS = mtsec minisec mygame
 \end{verbatim}
 
-The second file that needs changing is configure.ac. This file needs to know about the Makefile.am file to make it into first Makefile.in and then a normal Makefile. We add a line about our new Makefile.am in the AC\_CONFIG\_FILES section that is right at the end of configure.ac file:
+The second file that needs changing is \filename{configure.ac}. This file needs to know about the \filename{Makefile.am} file to make it into first \filename{Makefile.in} and then a normal \filename{Makefile}. We add a line about our new \filename{Makefile.am} in the \codename{AC\_CONFIG\_FILES} section that is right at the end of \filename{configure.ac} file:
 
 \begin{verbatim}
 AC_CONFIG_FILES([
@@ -276,17 +288,17 @@ modules/games/mygame/Makefile
 ]) 
 \end{verbatim}
 
-Now the build system is ready for the code for the ruleset to be written. You will need to run ./autogen.sh and ./configure each time you edit your Makefile.am, so it would be a good idea to do that now. Note that because it specifies mygame.cpp as a source file and we haven't created it yet, the build system will not make the ruleset module.
+Now the build system is ready for the code for the ruleset to be written. You will need to run \codename{./autogen.sh} and \codename{./configure} each time you edit your \filename{Makefile.am}, so it would be a good idea to do that now. Note that because it specifies \filename{mygame.cpp} as a source file and we haven't created it yet, the build system will not make the ruleset module.
 
 \section{Out of Tree Modules}
 \label{sec:outoftree-module-build}
 
 You can use any build system you want if you are building out of tree. One point to keep in mind though is the location that the ruleset module needs to be installed to. It should match the location expected by tpserver-cpp. Typical locations could be one of the following:
 \begin{itemize}
- \item /usr/lib/tpserver/ruleset/
- \item /usr/local/lib/tpserver/ruleset/
- \item /opt/tp/lib/tpserver/ruleset/
- \item \$PREFIX/lib/tpserver/ruleset/
+ \item \filename{/usr/lib/tpserver/ruleset/}
+ \item \filename{/usr/local/lib/tpserver/ruleset/}
+ \item \filename{/opt/tp/lib/tpserver/ruleset/}
+ \item \filename{\$PREFIX/lib/tpserver/ruleset/}
 \end{itemize}
 
 If the ruleset module isn't installed in the correct location, the name of the ruleset in the settings will need to include the path to the module. For example:
