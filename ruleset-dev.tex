@@ -229,7 +229,27 @@ The third step is to code, and the fourth is test, followed by more coding and t
 \section{Out of Tree Modules}
 \label{sec:outoftree-module-build}
 
+You can use any build system you want if you are building out of tree. One point to keep in mind though is the location that the ruleset module needs to be installed to. It should match the location expected by tpserver-cpp. Typical locations could be one of the following:
+\begin{itemize}
+ \item /usr/lib/tpserver/ruleset/
+ \item /usr/local/lib/tpserver/ruleset/
+ \item /opt/tp/lib/tpserver/ruleset/
+ \item \$PREFIX/lib/tpserver/ruleset/
+\end{itemize}
 
+If the ruleset module isn't installed in the correct location, the name of the ruleset in the settings will need to include the path to the module. For example:
+
+\begin{verbatim}
+#Ruleset module installed in /usr/local/lib/mygamename/
+#while server expects them in /usr/lib/tpserver/rulesets/
+
+ruleset = "/usr/local/lib/mygamename/libmyruleset"
+
+#compare with the following
+#ruleset = myruleset
+\end{verbatim}
+
+As can be seen, it is preferable to have the ruleset module installed in the right place to make configuring easier for game admins to set up games. But using the path can be handy in testing the ruleset without having to install it after every change.
 
 \chapter{Writing the Ruleset}
 \label{chap:ruleset-writing}
