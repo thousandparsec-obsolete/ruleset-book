@@ -466,4 +466,26 @@ tpserver-cpp>
 
 Now while this is a working ruleset, there isn't a lot to do if you try to play the game. So the next thing is to create some object types, and create a universe.
 
+\chapter{Developing Object Types}
+\label{chap:objectdata-writing}
+
+A ruleset has to set what types of object can exist. To create these object types, we create \codename{ObjectType} and corresponding \codename{ObjectBehaviour} subclasses, using the various \codename{ObjectParameter} classes to store the actual data.
+
+As mentioned in section \ref{sec:object-types}, the common object properties are held in the \codename{IGObject} class, and the different types of objects have their data held in the \codename{ObjectParameter} classes. This allows an object to change it's type---for example, from a ship object to a debris object when it's destroyed.
+
+The \codename{Object} class holds the data for the object in a list of \codename{ObjectParameterGroup}s, each which contain a list of \codename{ObjectParameter}s. There are a number of \codename{ObjectParameter} types defined, including;
+\begin{itemize}
+\item 3D Vectors for Position, Velocity and Acceleration,
+\item OrderQueues,
+\item References,
+\item Reference quantity lists,
+\item Resource List,
+\item Size,
+\item Media URL.
+\end{itemize}
+
+When creating a new object type, the two main tasks are to set up the \codename{ObjectParameter}s and \codename{ObjectParamterGroup}s in a subclass of \codename{ObjectType}, and to provide a usable interface to the ruleset in a subclass of \codename{ObjectBehaviour}.
+
+
+
 \end{document}
