@@ -35,18 +35,19 @@ you need to do and highlight issues and probable sticking points. Hopefully it m
 
 \chapter{Thousand Parsec}
 \label{chap:tp}
-Started in 2003 by mithro (Tim Ansell) and llnz (Lee Begg), at mithro's instigation, the project was aiming to become a framework for building online turn base space strategy games. Thousand Parsec was originally conceived as a ``Stars!'' clone, but taking inspiration from the WorldForge project---building a framework for creating massively multiplayer online role playing games---that both mithro and llnz worked on, it was decided to go for the much more general goal.
+Started in 2002 by mithro (Tim Ansell) and llnz (Lee Begg), at mithro's instigation, the project was aiming to become a framework for building online turn base space strategy games. Thousand Parsec was originally conceived as a ``Stars!'' clone, but taking inspiration from the WorldForge project---building a framework for creating massively multiplayer online role playing games---that both mithro and llnz worked on, it was decided to go for the much more general goal.
 
 
-The framework can be divided into four areas.
+The framework can be divided into five areas.
 \begin{itemize}
  \item Protocol
  \item Servers
  \item Clients
  \item Media
+ \item Tools
 \end{itemize}
 
-The protocol is described fully in chapter \ref{chap:protocol-intro}. Servers provide games using the TP protocol, and can do it in different ways. They can provide multiple games at once, and can host different games. Clients provide the user's view of the game. A client can connect to any server, and users should be able to use multiple different clients to connect to any game. The media collected by the project can be used by any game.
+The protocol is described fully in chapter \ref{chap:protocol-intro}. Servers provide games using the TP protocol, and can do it in different ways. They can provide multiple games at once, and can host different games. Clients provide the user's view of the game. A client can connect to any server, and users should be able to use multiple different clients to connect to any game. The media collected by the project can be used by any game. Tools are used to develop rulesets and setup/manage server and other useful tasks.
 
 The whole framework is under development.
 
@@ -59,7 +60,7 @@ The Thousand Parsec protocol is the truly defining work of Thousand Parsec. It s
 \label{chap:tpserver-cpp-intro}
 tpserver-cpp is the software written in C++ for Thousand Parsec which implements a Thousand Parsec protocol Server. It was mostly designed and written by Lee Begg (llnz). In it's early days, Lee used it as the project for his Honours Level (4th year university) Software Engineering project.
 
-It supports only one game at a time. It uses plugins (dynamically loaded libraries) to implement tpscheme (tpcl), persistence methods, and rulesets. It is currently single threaded, although that is very likely to change.
+It supports only one game at a time. It uses plugins (dynamically loaded libraries) to implement tpscheme (tpcl), persistence methods, and rulesets. It is single threaded, using non-blocking sockets and an event-style processing model.
 
 tpserver-cpp has a nice console terminal, using libtprl. Underneath, libtprl is a wrapper around Readline, so all readline editing features, and history, are available.
 
