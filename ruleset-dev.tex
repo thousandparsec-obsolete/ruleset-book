@@ -5,6 +5,8 @@
 \title{Ruleset Development with tpserver-cpp}
 \author{Lee Begg}
 
+\usepackage{verbatim}
+
 
 %useful commands
 
@@ -485,8 +487,79 @@ The \codename{Object} class holds the data for the object in a list of \codename
 \item Media URL.
 \end{itemize}
 
-When creating a new object type, the two main tasks are to set up the \codename{ObjectParameter}s and \codename{ObjectParamterGroup}s in a subclass of \codename{ObjectType}, and to provide a usable interface to the ruleset in a subclass of \codename{ObjectBehaviour}.
+When creating a new object type, the two main tasks are to set up the \codename{ObjectParameter}s and \codename{ObjectParamterGroup}s in a subclass of \codename{ObjectType}, and to provide a usable interface to the ruleset in a subclass of \codename{ObjectBehaviour}. Two parallel class hierarchies are formed, one for \codename{ObjectType}s and one for \codename{ObjectBehaviour}s.
+
+\section{Universe ObjectType}
+
+We shall now create an ``universe'' object type. This object encompasses all objects in the game, and is the high level container. The Universe object will have position, velocity and size, and also an `age' field, to indicate how old the universe (and the game) is.
+
+The first stage is to create the \codename{ObjectType} for the Universe. We only need need three methods, including the constructor and destructors, the other method creates an object instances of the corresponding \codename{ObjectBehaviour}. The header looks like:
+
+\begin{verbatim}
+#include <tpserver/objecttype.h>
+
+class UniverseType : public ObjectType{
+  public:
+    UniverseType();
+    virtual ~UniverseType();
+  
+  protected:
+    ObjectBehaviour* createObjectBehaviour() const;
+};
+\end{verbatim}
+
+The server only needs one instance of the \codename{UniverseType} class, as it is only used to create and describe Universe type objects. The destructor is empty and does nothing. The \codename{createObjectBehaviour()} we will come back to in the next section.
+
+Almost all of the work of the \codename{UniverseType} is done in the constructor as it sets up a few things. These don't have to be done in the constructor, but have to be done before giving the \codename{UniverseType} object to the \codename{ObjectTypeManager}---in this case it is easier to do it in the constructor.
+
+First, an \codename{ObjectParameterGroupDesc} is created for the locational information.
+
+\begin{verbatim}
+//in the constructor of UniverseType
+ObjectParameterGroupDesc* group = new ObjectParameterGroupDesc();
+group->setName("Positional");
+group->setDescription("Positional information");
+group->addParameter(obpT_Position_3D, "Position", "The position of the object");
+group->addParameter(obpT_Velocity, "Velocity", "The velocity of the object");
+group->addParameter(obpT_Size, "Size", "The size of the object");
+addParameterGroupDesc(group);
+\end{verbatim}
 
 
+
+A second \codename{ObjectParameterGroupDesc} is created for the informational data, the age in this case.
+
+\begin{verbatim}
+//in the constructor of UniverseType
+ObjectParameterGroupDesc *infogroup = new ObjectParameterGroupDesc();
+infogroup->setName("Informational");
+infogroup->setDescription("Information about the universe");
+infogroup->addParameter(obpT_Integer, "Age", "The Age of the universe");
+addParameterGroupDesc(infogroup);
+\end{verbatim}
+
+Lastly, the name and description of the object type is set.
+
+\begin{verbatim}
+//in the constructor of UniverseType
+nametype = "Universe";
+typedesc = "The Universe";
+\end{verbatim}
+
+Full and completed UniverseType is given in Appendix \ref{apx:universe_ex}.
+
+
+
+\appendix
+\chapter{Chapter \ref{chap:objectdata-writing} Universe ObjectType example}
+\label{apx:universe_ex}
+
+This files are available in \filename{ex/universetype/}.
+
+\section{universe.h}
+\verbatiminput{ex/universetype/universe.h}
+
+\section{universe.cpp}
+\verbatiminput{ex/universetype/universe.cpp}
 
 \end{document}
