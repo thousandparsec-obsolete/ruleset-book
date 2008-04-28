@@ -358,6 +358,8 @@ class MyGameRuleset : public Ruleset{
 #endif
 \end{verbatim}
 
+A namespace is used (\codename{MyGame} in this case) to make sure this ruleset's classes do not interfer with other rulesets or modules.
+
 Now, implementing the nine methods isn't too hard for a start. We will break it down and comment on this one step at a time. These would be written in the \filename{mygame.cpp} file.
 
 The first thing in the \filename{mygame.cpp} file should be a one line comment saying what is in this file, and then the copyright and license for the file (see section \ref{sec:licensing}). Following that, is where the include directives are. It helps maintainance if you keep them organised and in groups---for example; system includes, tpserver-cpp core includes, ruleset local includes, then the header file for this implementation file.
