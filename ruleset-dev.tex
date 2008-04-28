@@ -327,19 +327,21 @@ As can be seen, it is preferable to have the ruleset module installed in the rig
 
 As mentioned in section \ref{sec:ruleset-class}, the Ruleset class is the main interface to the ruleset for the core server to use. So now it's time to start writing it.
 
-Obviously, the Ruleset class for this ruleset module must be a subclass of Ruleset, and must implement all the pure virtual methods. So, the header (\filename{mygame.h}) is straight forward.
+Obviously, the Ruleset class for this ruleset module must be a subclass of Ruleset, and must implement all the pure virtual methods. So, the header (\filename{mygame.h}) is straight forward. Full source code is in Appendix \ref{apx:emptyruleset_ex}.
 
 \begin{verbatim}
-#ifndef MYGAME_H
-#define MYGAME_H
+#ifndef MYGAME_MYGAMERULESET_H
+#define MYGAME_MYGAMERULESET_H
 // License and a little documentation here
 
 #include <tpserver/ruleset.h>
 
-class MyGame : public Ruleset{
+namespace MyGame{
+
+class MyGameRuleset : public Ruleset{
  public:
-  MyGame();
-  virtual ~MyGame();
+  MyGameRuleset();
+  virtual ~MyGameRuleset();
 
   std::string getName();
   std::string getVersion();
@@ -350,6 +352,8 @@ class MyGame : public Ruleset{
   void onPlayerAdded(Player* player);
 
 };
+
+} // namespace MyGame
 
 #endif
 \end{verbatim}
@@ -384,21 +388,21 @@ After the includes is a good place for a little bit of libtool/libltdl magic, wh
 The first methods are the constructor and destructor, and most of the time neither will do anything.
 
 \begin{verbatim}
-MyGame::MyGame(){
+MyGameRuleset::MyGameRuleset(){
 }
 
-MyGame::~MyGame(){
+MyGameRuleset::~MyGameRuleset(){
 }
 \end{verbatim}
 
 The \codename{getName()} and \codename{getVersion()} methods both return the obvious strings.
 
 \begin{verbatim}
-std::string MyGame::getName(){
+std::string MyGameRuleset::getName(){
   return "MyGame";
 }
 
-std::string MyGame::getVersion(){
+std::string MyGameRuleset::getVersion(){
   return "0.1";
 }
 \end{verbatim}
@@ -406,15 +410,15 @@ std::string MyGame::getVersion(){
 For a start, the next three methods dealing with initialisation, creation and starting are nearly empty, but will get filled in as more of the ruleset is written.
 
 \begin{verbatim}
-void MyGame::initGame(){
+void MyGameRuleset::initGame(){
   Logger::getLogger()->info("MyGame initialised"};
 }
 
-void MyGame::createGame(){
+void MyGameRuleset::createGame(){
   Logger::getLogger()->info("MyGame created"};
 }
 
-void MyGame::startGame(){
+void MyGameRuleset::startGame(){
   Logger::getLogger()->info("MyGame started"};
 }
 \end{verbatim}
@@ -422,12 +426,12 @@ void MyGame::startGame(){
 The last two methods deal with players joining the game. The \codename{onAddPlayer()} method will probably not change, unless the ruleset has to limit the number of players joining a game or the ruleset has to make sure the player can join the game at this point. Things that could be checked include if there is a limited number of races that can be played, or if there is an available planet for the player to have as a homeworld. The second method, \codename{onPlayerAdded()}, is where the player is set up ready to play the game. This can include; creating initial designs, setting homeplanet, creating any initial resources (like fleets), and so on.
 
 \begin{verbatim}
-bool MyGame::onAddPlayer(Player* player){
+bool MyGameRuleset::onAddPlayer(Player* player){
   Logger::getLogger()->debug("MyGame onAddPlayer");
   return true;
 }
 
-void MyGame::onPlayerAdded(Player* player){
+void MyGameRuleset::onPlayerAdded(Player* player){
   Logger::getLogger()->debug("MyGame onPlayerAdded");
 }
 \end{verbatim}
@@ -444,7 +448,7 @@ The \codename{tp\_init()} function itself is fairly straight forward. For rulese
 extern "C" {
   #define tp_init libmygame_LTX_tp_init
   bool tp_init(){
-    return Game::getGame()->setRuleset(new MyGame());
+    return Game::getGame()->setRuleset(new MyGame::MyGameRuleset());
   }
 }
 \end{verbatim}
@@ -551,10 +555,26 @@ Full and completed UniverseType is given in Appendix \ref{apx:universe_ex}.
 
 
 \appendix
+\part{Appendix}
+\label{part:appendix}
+
+\chapter{Chapter \ref{chap:ruleset-writing} Basic Ruleset Module}
+\label{apx:emptyruleset_ex}
+
+These files are available in \filename{ex/emptyruleset/}.
+
+\section{mygame.h}
+\verbatiminput{ex/emptyruleset/mygame.h}
+
+\section{mygame.cpp}
+\verbatiminput{ex/emptyruleset/mygame.cpp}
+
+
+
 \chapter{Chapter \ref{chap:objectdata-writing} Universe ObjectType example}
 \label{apx:universe_ex}
 
-This files are available in \filename{ex/universetype/}.
+These files are available in \filename{ex/universetype/}.
 
 \section{universe.h}
 \verbatiminput{ex/universetype/universe.h}
