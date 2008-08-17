@@ -554,6 +554,41 @@ typedesc = "The Universe";
 
 Full and completed UniverseType is given in Appendix \ref{apx:universe_ex}.
 
+\section{Universe ObjectBehaviour}
+
+Now we create the \codename{ObjectBehaviour} for the Universe object type. This class forms the ruleset's way of interacting with the object. The class can not have any data members as it is not serialised to the database.
+
+The Universe object types's \codename{ObjectBehaviour}, called \codename{Universe}, has methods to set and get the parameters easily, and three other methods. These method are:
+\begin{description}
+ \item[packExtraData] Used when TP03 protocol is being used. Will be removed in future.
+\item[doOnceATurn] Called once a turn at the end, to do any housekeeping.
+\item[getContainerType] Returns the container type, which can be used by the ruleset to figure out if the object can contain other objects.
+ \end{description}
+
+The header for \codename{Universe} is given:
+
+\begin{verbatim}
+class Universe : public ObjectBehaviour{
+  public:
+    Universe();
+    virtual ~Universe();
+
+    void packExtraData(Frame * frame);
+    void doOnceATurn();
+    int getContainerType();
+
+    Vector3d getPosition() const;
+    Vector3d getVelocity() const;
+    uint64_t getSize() const;
+    int getYear();
+
+    void setPosition(const Vector3d & np);
+    void setVelocity(const Vector3d & nv);
+    void setSize(uint64_t ns);
+    void setYear(int year);
+};
+\end{verbatim}
+
 
 
 \appendix
