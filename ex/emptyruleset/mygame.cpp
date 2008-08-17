@@ -56,15 +56,15 @@ std::string MyGameRuleset::getVersion(){
 }
 
 void MyGameRuleset::initGame(){
-  Logger::getLogger()->info("MyGame initialised"};
+  Logger::getLogger()->info("MyGame initialised");
 }
 
 void MyGameRuleset::createGame(){
-  Logger::getLogger()->info("MyGame created"};
+  Logger::getLogger()->info("MyGame created");
 }
 
 void MyGameRuleset::startGame(){
-  Logger::getLogger()->info("MyGame started"};
+  Logger::getLogger()->info("MyGame started");
 }
 
 bool MyGameRuleset::onAddPlayer(Player* player){

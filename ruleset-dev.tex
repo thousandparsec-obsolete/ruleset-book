@@ -373,7 +373,7 @@ The first thing in the \filename{mygame.cpp} file should be a one line comment s
 // tpserver includes
 #include <tpserver/game.h>
 #include <tpserver/logging.h>
-#include <tpserver/objectdatamanager.h>
+#include <tpserver/objecttypemanager.h>
 #include <tpserver/ordermanager.h>
 #include <tpserver/player.h>
 
@@ -413,15 +413,15 @@ For a start, the next three methods dealing with initialisation, creation and st
 
 \begin{verbatim}
 void MyGameRuleset::initGame(){
-  Logger::getLogger()->info("MyGame initialised"};
+  Logger::getLogger()->info("MyGame initialised");
 }
 
 void MyGameRuleset::createGame(){
-  Logger::getLogger()->info("MyGame created"};
+  Logger::getLogger()->info("MyGame created");
 }
 
 void MyGameRuleset::startGame(){
-  Logger::getLogger()->info("MyGame started"};
+  Logger::getLogger()->info("MyGame started");
 }
 \end{verbatim}
 
