@@ -1,6 +1,8 @@
 *.log
 *.toc
 *.aux
+*.ps
+*.dvi
 *.kilepr
 *.pdf
 *.backup
